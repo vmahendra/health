@@ -4,7 +4,7 @@ class PhysiciansController < ApplicationController
   # GET /physicians
   # GET /physicians.json
   def index
-    @physicians = Physician.all
+    @physicians = Physician.paginate(:page => params[:page], :per_page => 5)
   end
 
   # GET /physicians/1
