@@ -5,9 +5,9 @@
 <table>
   <thead>
     <tr>
-      <th>Physician</th>
-      <th>Patient</th>
-      <th>Appointment date</th>
+      <th><%= sortable "physician_id", "Physicain" %></th>
+      <th><%= sortable "patient_id", "Patient" %></th>
+      <th><%= sortable "appointment_date", "Appointment date" %></th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -27,5 +27,5 @@
 </table>
 
 <br>
-
+<%= will_paginate @appointments%>
 <%= link_to 'New Appointment', new_appointment_path %>

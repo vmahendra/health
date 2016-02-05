@@ -1,10 +1,10 @@
 class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :update, :destroy]
-
+  helper_method :sort_column, :sort_direction
   # GET /appointments
   # GET /appointments.json
   def index
-    @appointments = Appointment.all
+    @appointments = Appointment.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 5)
   end
 
   # GET /appointments/1
@@ -70,5 +70,13 @@ class AppointmentsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def appointment_params
       params.require(:appointment).permit(:physician_id, :patient_id, :appointment_date)
+    end
+
+    def sort_column
+      Appointment.column_names.include?(params[:sort]) ? params[:sort] : "appointment_date"
+    end
+
+    def sort_direction
+      %w(asc desc).include?(params[:direction]) ? params[:direction] : "desc"
     end
 end
