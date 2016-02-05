@@ -1,10 +1,10 @@
 class PhysiciansController < ApplicationController
   before_action :set_physician, only: [:show, :edit, :update, :destroy]
-
+  helper_method :sort_column, :sort_direction
   # GET /physicians
   # GET /physicians.json
   def index
-    @physicians = Physician.paginate(:page => params[:page], :per_page => 5)
+    @physicians = Physician.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 5)
   end
 
   # GET /physicians/1
@@ -70,5 +70,13 @@ class PhysiciansController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def physician_params
       params.require(:physician).permit(:name, :experiance, :location, :city, :state)
+    end
+
+    def sort_column
+      Physician.column_names.include?(params[:sort]) ? params[:sort] : "name"
+    end
+
+    def sort_direction
+      %w(asc desc).include?(params[:direction]) ? params[:direction] : "asc"
     end
 end
